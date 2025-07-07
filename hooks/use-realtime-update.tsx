@@ -21,7 +21,7 @@ interface UseRealtimeUpdateProps {
   interval?: number;
 }
 
-export function useRealtimeUpdate(
+export function useRealtimeCandles(
   candles: CandleData[],
   generateCandle: GenerateCandleFn,
   onNewCandle: NewCandleHandler,

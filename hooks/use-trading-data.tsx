@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useCandleData } from "./use-candle-data";
-import { useRealtimeUpdate } from "./use-realtime-update";
+import { useRealtimeCandles } from "./use-realtime-update";
 
 export interface CandleData {
   time: number;
@@ -47,7 +47,7 @@ export function useTradingData(selectedAsset = "BTC") {
   }, []);
 
   // Real-time updates
-  const { currentCandle } = useRealtimeUpdate(
+  const { currentCandle } = useRealtimeCandles(
     candles,
     generateCandle,
     handleNewCandle,
