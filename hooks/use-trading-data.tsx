@@ -69,4 +69,5 @@ export function useTradingData(selectedAsset = "BTC") {
     priceChange, 
     chartData: combinedData 
   };
+
 }

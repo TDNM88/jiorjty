@@ -6,7 +6,13 @@ import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/hooks/use-auth"
 import { Wallet, Plus, Minus } from "lucide-react"
 
-export function WalletCard() {
+interface WalletCardProps {
+  onDepositClick?: () => void;
+  balance?: number;
+  profitLoss?: number;
+}
+
+export function WalletCard({ onDepositClick, balance = 0, profitLoss = 0 }: WalletCardProps) {
   const { user } = useAuth()
 
   if (!user) {
@@ -15,7 +21,12 @@ export function WalletCard() {
         <Wallet className="w-12 h-12 mx-auto mb-4 text-slate-400" />
         <h3 className="text-lg font-semibold text-white mb-2">Connect Wallet</h3>
         <p className="text-slate-400 text-sm mb-4">Connect your wallet to start trading</p>
-        <Button className="bg-purple-600 hover:bg-purple-700">Connect Now</Button>
+        <Button 
+          className="bg-purple-600 hover:bg-purple-700"
+          onClick={onDepositClick}
+        >
+          Connect Now
+        </Button>
       </Card>
     )
   }
@@ -33,7 +44,7 @@ export function WalletCard() {
       </div>
 
       <div className="text-center mb-6">
-        <div className="text-3xl font-bold text-white mb-1">${(user.balance || 0).toFixed(2)}</div>
+        <div className="text-3xl font-bold text-white">${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         <div className="text-slate-400 text-sm">Total Balance</div>
       </div>
 
@@ -49,20 +60,22 @@ export function WalletCard() {
       </div>
 
       <div className="flex space-x-2">
-        <Button
-          variant="outline"
-          className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700 bg-transparent"
-          onClick={() => alert("Deposit functionality coming soon!")}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="text-xs border-slate-600 text-slate-300 hover:bg-slate-700/50"
+          onClick={onDepositClick}
         >
-          <Plus className="w-4 h-4 mr-1" />
+          <Plus className="w-3 h-3 mr-1" />
           Deposit
         </Button>
-        <Button
-          variant="outline"
-          className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700 bg-transparent"
-          onClick={() => alert("Withdraw functionality coming soon!")}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="text-xs border-slate-600 text-slate-300 hover:bg-slate-700/50"
+          onClick={onDepositClick}
         >
-          <Minus className="w-4 h-4 mr-1" />
+          <Minus className="w-3 h-3 mr-1" />
           Withdraw
         </Button>
       </div>

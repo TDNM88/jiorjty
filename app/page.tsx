@@ -3,9 +3,11 @@
 import { useState, useEffect, useCallback } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { TradingChart } from "@/components/trading-chart"
 import { TradePanel } from "@/components/trade-panel"
 import { WalletCard } from "@/components/wallet-card"
+import { BankTransaction } from "@/components/bank-transaction"
 import { TradeHistory } from "@/components/trade-history"
 import { Header } from "@/components/header"
 import { WelcomeScreen } from "@/components/welcome-screen"
@@ -17,7 +19,7 @@ import { useAuth } from "@/hooks/use-auth"
 import { useTradingData } from "@/hooks/use-trading-data"
 import { useLanguage } from "@/hooks/use-language"
 import { getAssetBySymbol } from "@/lib/assets-data"
-import { TrendingUp, TrendingDown, Activity } from "lucide-react"
+import { TrendingUp, TrendingDown, Activity, Banknote } from "lucide-react"
 
 export default function TradingPage() {
   const { user } = useAuth()
@@ -28,6 +30,7 @@ export default function TradingPage() {
   const addNotification = useCallback(_addNotification, [])
   
   const [selectedAsset, setSelectedAsset] = useState("BTC")
+  const [showBankTransaction, setShowBankTransaction] = useState(false)
   const [showWelcome, setShowWelcome] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
   const [showLanguageSelection, setShowLanguageSelection] = useState(false)
@@ -64,6 +67,29 @@ export default function TradingPage() {
 
   if (showLoading) {
     return <LoadingScreen onComplete={() => setShowLoading(false)} />
+  }
+
+  if (showBankTransaction) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto p-4 pt-24">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">Ngân hàng</h1>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowBankTransaction(false)}
+              className="flex items-center gap-2"
+            >
+              Quay lại giao dịch
+            </Button>
+          </div>
+          <div className="flex justify-center">
+            <BankTransaction />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
