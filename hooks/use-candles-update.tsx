@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from 'react';
-import type { CandleData, GenerateCandleFn } from './use-candle-data';
+import type { CandleData, GenerateCandleFn } from './types';
 type NewCandleHandler = (candle: CandleData) => void;
 
 export interface UseCandlesUpdateProps {
@@ -59,11 +59,10 @@ export const useCandlesUpdate = ({
       } else if (currentCandle) {
         try {
           // Update the current candle
-          const newCandle = generateCandle(currentCandle, Date.now());
+          const newCandle = generateCandle(currentCandle.close, Date.now());
           setCurrentCandle({
-            ...newCandle,
-            time: currentCandle.time, // Keep the original time
-            open: currentCandle.open, // Keep the original open
+            ...currentCandle,
+            close: newCandle.close,
             high: Math.max(currentCandle.high, newCandle.close),
             low: Math.min(currentCandle.low, newCandle.close),
             volume: currentCandle.volume + (newCandle.volume || 0)

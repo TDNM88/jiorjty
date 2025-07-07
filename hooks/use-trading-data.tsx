@@ -3,15 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useCandleData } from "./use-candle-data";
 import { useCandlesUpdate } from "./use-candles-update";
-
-export interface CandleData {
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
-}
+import type { CandleData } from "./types";
 
 export function useTradingData(selectedAsset = "BTC") {
   const [chartData, setChartData] = useState<CandleData[]>([]);
