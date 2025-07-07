@@ -1,0 +1,30 @@
+{
+  "language": {
+    "selectLanguage": "Select Language",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "englishDescription": "Use English interface",
+    "vietnameseDescription": "Use Vietnamese interface"
+  },
+  "common": {
+    "confirm": "Confirm",
+    "send": "Send",
+    "typeMessage": "Type a message..."
+  },
+  "chart": {
+    "volume": "Volume"
+  },
+  "trade": "Trade",
+  "markets": "Markets",
+  "portfolio": "Portfolio",
+  "exchange": "Exchange",
+  "customerSupport": "Customer Support",
+  "convertCurrency": "Convert Currency",
+  "fast_execution": "Fast Execution",
+  "secure_platform": "Secure Platform",
+  "realtime_data": "Real-time Data",
+  "title": "Welcome to Our Platform",
+  "welcome_title": "Start Trading Today",
+  "welcome_subtitle": "Join thousands of traders worldwide",
+  "get_started": "Get Started"
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="title">Binary Trading Platform - Markets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 data-lang-key="title">Binary Trading Platform</h1>
+            <nav>
+                <button class="nav-btn" data-lang-key="trade" onclick="window.location.href='index.html'">Trade</button>
+                <button class="nav-btn active" data-lang-key="markets">Markets</button>
+                <button class="nav-btn" data-lang-key="portfolio" onclick="window.location.href='portfolio.html'">Portfolio</button>
+            </nav>
+            <button class="connect-wallet" id="connectWallet" data-lang-key="connect_wallet">Connect Wallet</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="history-header">
+                    <h3 class="history-title" data-lang-key="markets">Markets</h3>
+                </div>
+                <table class="trade-table">
+                    <thead>
+                        <tr>
+                            <th data-lang-key="pair">Pair</th>
+                            <th data-lang-key="price">Price</th>
+                            <th data-lang-key="change_24h">24h Change</th>
+                            <th data-lang-key="volume">Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody class="markets-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 data-lang-key="connect_wallet">Connect Wallet</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

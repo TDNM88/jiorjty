@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="title">Binary Trading Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 data-lang-key="title">Binary Trading Platform</h1>
+            <nav>
+                <button class="nav-btn active" data-lang-key="trade" onclick="window.location.href='index.html'">Trade</button>
+                <button class="nav-btn" data-lang-key="markets" onclick="window.location.href='markets.html'">Markets</button>
+                <button class="nav-btn" data-lang-key="portfolio" onclick="window.location.href='portfolio.html'">Portfolio</button>
+            </nav>
+            <div class="user-menu">
+                <div id="userInfo" class="user-info" style="display: none;">
+                    <span class="user-avatar">U</span>
+                    <span class="user-name">User</span>
+                    <div class="dropdown-content">
+                        <a href="#" id="logoutBtn" data-lang-key="logout">Logout</a>
+                    </div>
+                </div>
+                <button id="connectWallet" class="connect-wallet" data-lang-key="connect_wallet">Connect Wallet</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="chart-container">
+            <div class="card">
+                <div class="chart-header">
+                    <h2 class="chart-title">
+                        <span id="currentAssetPair">SOL/USDT</span>
+                        <span id="priceChange" class="price-change">+0.00%</span>
+                    </h2>
+                    <div class="timeframe-selector">
+                        <button class="timeframe-btn active">1m</button>
+                        <button class="timeframe-btn">5m</button>
+                        <button class="timeframe-btn">15m</button>
+                        <button class="timeframe-btn">1h</button>
+                        <button class="timeframe-btn">4h</button>
+                        <button class="timeframe-btn">1d</button>
+                    </div>
+                </div>
+                <div id="chart" class="chart"></div>
+            </div>
+        </div>
+
+        <div class="trade-container">
+            <div class="card">
+                <div class="trade-tabs">
+                    <button id="buyTab" class="trade-tab active" data-tab="buy" data-lang-key="buy">Buy</button>
+                    <button id="sellTab" class="trade-tab" data-tab="sell" data-lang-key="sell">Sell</button>
+                </div>
+                <div class="trade-form">
+                    <div class="form-group">
+                        <label for="assetPair" data-lang-key="asset_pair">Asset Pair</label>
+                        <select id="assetPair" class="form-select">
+                            <option value="SOL/USDT">SOL/USDT</option>
+                            <option value="BTC/USDT">BTC/USDT</option>
+                            <option value="ETH/USDT">ETH/USDT</option>
+                            <option value="BNB/USDT">BNB/USDT</option>
+                            <option value="ADA/USDT">ADA/USDT</option>
+                            <option value="XRP/USDT">XRP/USDT</option>
+                            <option value="GOLD/USDT">GOLD/USDT</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount" data-lang-key="amount">Amount <span id="amountSuffix">USDT</span></label>
+                        <input type="number" id="amount" class="form-input" placeholder="0.00" step="0.01" min="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label data-lang-key="payout">Payout</label>
+                        <div class="payout-amount" id="payoutAmount">0.00 USDT</div>
+                    </div>
+                    <button id="placeOrderBtn" class="btn btn-primary btn-block" data-lang-key="place_order">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 data-lang-key="login">Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" data-lang-key="username">Username</label>
+                    <input type="text" id="username" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" data-lang-key="password">Password</label>
+                    <input type="password" id="password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" data-lang-key="login">Login</button>
+            </form>
+            <p class="demo-credentials" data-lang-key="demo_credentials">Demo: demo / demo123</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

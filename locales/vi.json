@@ -1,0 +1,30 @@
+{
+  "language": {
+    "selectLanguage": "Chọn Ngôn Ngữ",
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt",
+    "englishDescription": "Sử dụng giao diện tiếng Anh",
+    "vietnameseDescription": "Sử dụng giao diện tiếng Việt"
+  },
+  "common": {
+    "confirm": "Xác nhận",
+    "send": "Gửi",
+    "typeMessage": "Nhập tin nhắn..."
+  },
+  "chart": {
+    "volume": "Khối lượng"
+  },
+  "trade": "Giao dịch",
+  "markets": "Thị trường",
+  "portfolio": "Danh mục",
+  "exchange": "Đổi tiền",
+  "customerSupport": "Hỗ trợ khách hàng",
+  "convertCurrency": "Chuyển đổi tiền tệ",
+  "fast_execution": "Khớp lệnh siêu tốc",
+  "secure_platform": "Nền tảng bảo mật",
+  "realtime_data": "Dữ liệu thời gian thực",
+  "title": "Chào mừng đến với nền tảng của chúng tôi",
+  "welcome_title": "Bắt đầu giao dịch ngay hôm nay",
+  "welcome_subtitle": "Tham gia cùng hàng ngàn nhà giao dịch trên toàn cầu",
+  "get_started": "Bắt đầu"
+}
