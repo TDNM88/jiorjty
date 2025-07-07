@@ -7,8 +7,5 @@ export interface CandleData {
   volume: number;
 }
 
-// A function that generates a new candle based on the previous candle or price
-export type GenerateCandleFn = {
-  (lastCandle: CandleData, timestamp?: number): CandleData;
-  (lastCandle: number, timestamp?: number): CandleData;
-};
+// A function that generates a new candle based on the previous candle's close price or a number
+export type GenerateCandleFn = (lastCandle: CandleData | number, timestamp?: number) => CandleData;

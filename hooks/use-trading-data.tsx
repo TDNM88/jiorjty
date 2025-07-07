@@ -12,11 +12,16 @@ export function useTradingData(selectedAsset = "BTC") {
   const initialPriceRef = useRef(0);
 
   // Use candle data hook
-  const { candles, generateCandle, initialPrice } = useCandleData(selectedAsset);
+  const { candles, generateCandle: generateCandleFn, initialPrice } = useCandleData(selectedAsset);
+  
+  // Create a type-safe wrapper for generateCandle that matches the expected signature
+  const generateCandle = useCallback((prevClose: number, timestamp: number) => {
+    return generateCandleFn(prevClose, timestamp);
+  }, [generateCandleFn]);
 
   // Save initial price to ref
   useEffect(() => {
-    if (initialPrice > 0) {
+    if (initialPrice !== undefined && initialPrice > 0) {
       initialPriceRef.current = initialPrice;
       setCurrentPrice(initialPrice);
     }
@@ -55,6 +60,7 @@ export function useTradingData(selectedAsset = "BTC") {
 
   // Combine historical and current candle data
   const combinedData = useMemo(() => {
+    if (!chartData) return [];
     return [...chartData, ...(currentCandle ? [currentCandle] : [])];
   }, [chartData, currentCandle]);
 
@@ -64,4 +70,5 @@ export function useTradingData(selectedAsset = "BTC") {
     chartData: combinedData,
     isLoading: combinedData.length === 0
   };
+
 }

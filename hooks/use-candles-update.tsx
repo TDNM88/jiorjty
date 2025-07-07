@@ -4,9 +4,12 @@ import { useState, useEffect, useCallback } from 'react';
 import type { CandleData, GenerateCandleFn } from './types';
 type NewCandleHandler = (candle: CandleData) => void;
 
+// Type for the generateCandle function that takes a number (close price) and returns a CandleData
+type NumberGenerateCandleFn = (prevClose: number, timestamp: number) => CandleData;
+
 export interface UseCandlesUpdateProps {
   candles: CandleData[];
-  generateCandle: GenerateCandleFn;
+  generateCandle: NumberGenerateCandleFn;
   onNewCandle: NewCandleHandler;
   interval?: number;
 }
@@ -18,10 +21,13 @@ export const useCandlesUpdate = ({
   interval = 1000
 }: UseCandlesUpdateProps) => {
   const [currentCandle, setCurrentCandle] = useState<CandleData | null>(null);
-  const lastCandle = candles[candles.length - 1];
+  
+  // Safely get the last candle, if available
+  const lastCandle = candles && candles.length > 0 ? candles[candles.length - 1] : null;
 
   useEffect(() => {
-    if (!lastCandle) return;
+    // Only proceed if we have candles and at least one candle
+    if (!candles || !candles.length || !lastCandle) return;
 
     // Initialize current candle with the last candle's close price
     if (!currentCandle) {
