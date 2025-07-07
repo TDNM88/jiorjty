@@ -47,12 +47,12 @@ export function useTradingData(selectedAsset = "BTC") {
   }, []);
 
   // Real-time updates
-  const { currentCandle } = useRealtimeUpdate({
+  const { currentCandle } = useRealtimeUpdate(
     candles,
     generateCandle,
-    onNewCandle: handleNewCandle,
-    interval: 1000 // Update every second
-  });
+    handleNewCandle,
+    1000 // Update every second
+  );
 
   // Update current price from the forming candle
   useEffect(() => {

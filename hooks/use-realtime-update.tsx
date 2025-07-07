@@ -21,12 +21,12 @@ interface UseRealtimeUpdateProps {
   interval?: number;
 }
 
-export function useRealtimeUpdate({
-  candles,
-  generateCandle,
-  onNewCandle,
-  interval = 1000
-}: UseRealtimeUpdateProps) {
+export function useRealtimeUpdate(
+  candles: CandleData[],
+  generateCandle: GenerateCandleFn,
+  onNewCandle: NewCandleHandler,
+  interval: number = 1000
+) {
   const [currentCandle, setCurrentCandle] = useState<CandleData | null>(null);
   const lastCandle = candles[candles.length - 1];
 
