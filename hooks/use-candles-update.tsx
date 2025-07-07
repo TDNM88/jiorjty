@@ -1,33 +1,22 @@
 "use client"
 
 import { useState, useEffect, useCallback } from 'react';
-
-interface CandleData {
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
-}
-
-type GenerateCandleFn = (lastCandle?: CandleData) => CandleData;
+import type { CandleData, GenerateCandleFn } from './use-candle-data';
 type NewCandleHandler = (candle: CandleData) => void;
 
-interface UseRealtimeUpdateProps {
+export interface UseCandlesUpdateProps {
   candles: CandleData[];
   generateCandle: GenerateCandleFn;
   onNewCandle: NewCandleHandler;
   interval?: number;
 }
 
-// Export the hook with a named export
-export const useRealtimeCandles = (
-  candles: CandleData[],
-  generateCandle: GenerateCandleFn,
-  onNewCandle: NewCandleHandler,
-  interval: number = 1000
-) => {
+export const useCandlesUpdate = ({
+  candles,
+  generateCandle,
+  onNewCandle,
+  interval = 1000
+}: UseCandlesUpdateProps) => {
   const [currentCandle, setCurrentCandle] = useState<CandleData | null>(null);
   const lastCandle = candles[candles.length - 1];
 
@@ -67,17 +56,21 @@ export const useRealtimeCandles = (
           close: currentCandle.close,
           volume: 0
         });
-      } else {
-        // Update the current candle
-        const newCandle = generateCandle(currentCandle);
-        setCurrentCandle({
-          ...newCandle,
-          time: currentCandle.time, // Keep the original time
-          open: currentCandle.open, // Keep the original open
-          high: Math.max(currentCandle.high, newCandle.close),
-          low: Math.min(currentCandle.low, newCandle.close),
-          volume: currentCandle.volume + newCandle.volume
-        });
+      } else if (currentCandle) {
+        try {
+          // Update the current candle
+          const newCandle = generateCandle(currentCandle, Date.now());
+          setCurrentCandle({
+            ...newCandle,
+            time: currentCandle.time, // Keep the original time
+            open: currentCandle.open, // Keep the original open
+            high: Math.max(currentCandle.high, newCandle.close),
+            low: Math.min(currentCandle.low, newCandle.close),
+            volume: currentCandle.volume + (newCandle.volume || 0)
+          });
+        } catch (error) {
+          console.error('Error generating candle:', error);
+        }
       }
     }, interval);
 

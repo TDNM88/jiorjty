@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-interface CandleData {
+// Export the CandleData interface
+export interface CandleData {
   time: number;
   open: number;
   high: number;
@@ -11,17 +12,20 @@ interface CandleData {
   volume: number;
 }
 
+// Export the GenerateCandleFn type
+export type GenerateCandleFn = (lastCandle: CandleData | number, timestamp?: number) => CandleData;
+
 export function useCandleData(selectedAsset: string) {
   const [candles, setCandles] = useState<CandleData[]>([]);
   const [initialPrice, setInitialPrice] = useState(0);
 
   // Generate mock candle data
-  const generateCandle = useCallback((lastCandle?: CandleData): CandleData => {
-    const basePrice = lastCandle?.close || 50000 + Math.random() * 10000;
+  const generateCandle: GenerateCandleFn = useCallback((lastCandle, timestamp) => {
+    const basePrice = typeof lastCandle === 'number' ? lastCandle : lastCandle.close;
     const volatility = 0.01 + Math.random() * 0.02;
     const changePercent = (Math.random() * 2 - 1) * volatility;
     const newPrice = basePrice * (1 + changePercent);
-    const open = lastCandle?.close || newPrice;
+    const open = typeof lastCandle === 'number' ? lastCandle : lastCandle.close;
     const close = newPrice;
     const high = Math.max(open, close) * (1 + Math.random() * 0.01);
     const low = Math.min(open, close) * (1 - Math.random() * 0.01);
@@ -43,7 +47,22 @@ export function useCandleData(selectedAsset: string) {
     const initialCandles: CandleData[] = [];
     const now = Date.now();
     
-    for (let i = 10; i > 0; i--) {
+    // Create the first candle with a random price
+    const firstCandle: CandleData = {
+      time: now - 10 * 60000, // 10 minutes ago
+      open: 50000 + Math.random() * 10000,
+      high: 0,
+      low: 0,
+      close: 0,
+      volume: 100 + Math.random() * 1000
+    };
+    firstCandle.close = firstCandle.open;
+    firstCandle.high = firstCandle.open * (1 + Math.random() * 0.01);
+    firstCandle.low = firstCandle.open * (1 - Math.random() * 0.01);
+    initialCandles.push(firstCandle);
+    
+    // Generate the rest of the candles
+    for (let i = 9; i > 0; i--) {
       const candle = generateCandle(initialCandles[initialCandles.length - 1]);
       candle.time = now - i * 60000; // 1 minute apart
       initialCandles.push(candle);
