@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { TrendingUp } from "lucide-react"
 
 interface LoadingScreenProps {
@@ -10,6 +10,7 @@ interface LoadingScreenProps {
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0)
   const [loadingText, setLoadingText] = useState("Initializing...")
+  const [isComplete, setIsComplete] = useState(false)
 
   const loadingSteps = [
     "Initializing...",
@@ -19,28 +20,56 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     "Almost ready...",
   ]
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = prev + Math.random() * 15 + 5
+  // Memoize the onComplete callback
+  const handleComplete = useCallback(() => {
+    if (!isComplete) {
+      setIsComplete(true);
+      onComplete();
+    }
+  }, [isComplete, onComplete]);
 
+  useEffect(() => {
+    let isMounted = true;
+    let timeoutId: NodeJS.Timeout;
+
+    const updateProgress = () => {
+      if (!isMounted) return;
+      
+      setProgress((prev) => {
+        const newProgress = Math.min(prev + Math.random() * 15 + 5, 100);
+        
         // Update loading text based on progress
-        const stepIndex = Math.floor((newProgress / 100) * loadingSteps.length)
+        const stepIndex = Math.floor((newProgress / 100) * loadingSteps.length);
         if (stepIndex < loadingSteps.length) {
-          setLoadingText(loadingSteps[stepIndex])
+          setLoadingText(loadingSteps[stepIndex]);
         }
 
         if (newProgress >= 100) {
-          clearInterval(interval)
-          setTimeout(onComplete, 500)
-          return 100
+          timeoutId = setTimeout(() => {
+            if (isMounted) {
+              handleComplete();
+            }
+          }, 500);
+          return 100;
         }
-        return newProgress
-      })
-    }, 200)
+        
+        // Schedule next update
+        setTimeout(updateProgress, 200);
+        return newProgress;
+      });
+    };
 
-    return () => clearInterval(interval)
-  }, [onComplete])
+    // Start the progress updates
+    updateProgress();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [handleComplete, loadingSteps]);
 
   return (
     <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
