@@ -1,0 +1,22 @@
+{
+  "chatbot": {
+    "title": "Deposit & Withdrawal Support",
+    "subtitle": "We're here to help with your transactions",
+    "welcomeMessage": "Hello! I'm your deposit and withdrawal support assistant. How can I help you today?",
+    "placeholder": "Type your message...",
+    "actions": {
+      "deposit": "Deposit Funds",
+      "withdraw": "Withdraw Funds",
+      "checkStatus": "Check Transaction Status",
+      "contactSupport": "Contact Support"
+    },
+    "responses": {
+      "deposit": "To make a deposit, please go to the 'Wallet' section and select 'Deposit'. Choose your preferred payment method and follow the instructions. Minimum deposit is $10.",
+      "withdraw": "To withdraw funds, please go to the 'Wallet' section and select 'Withdraw'. Ensure your account is verified before making a withdrawal. Processing time is 1-3 business days.",
+      "processing": "I'm checking the status of your transaction. Please wait a moment...",
+      "contactSupport": "If you need further assistance, our support team is available 24/7. You can also email us at support@example.com.",
+      "thankYou": "Thank you for your patience! Is there anything else I can help you with?",
+      "default": "I'm here to assist you with deposits, withdrawals, and any transaction-related questions."
+    }
+  }
+}
