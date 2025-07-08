@@ -11,6 +11,24 @@
     "send": "Gửi",
     "typeMessage": "Nhập tin nhắn..."
   },
+  "auth": {
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "enter_username": "Nhập tên đăng nhập",
+    "enter_password": "Nhập mật khẩu",
+    "demo_account": "Tài khoản Demo",
+    "login": "Đăng nhập",
+    "signup": "Đăng ký",
+    "forgot_password": "Quên mật khẩu?"
+  },
+  "market": {
+    "search_markets": "Tìm kiếm thị trường...",
+    "price": "Giá",
+    "change_24h": "Thay đổi 24h",
+    "volume": "Khối lượng",
+    "market_cap": "Vốn hóa",
+    "action": "Hành động"
+  },
   "chart": {
     "volume": "Khối lượng"
   },

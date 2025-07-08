@@ -34,9 +34,14 @@ export function ModernChart({
 
   // Initialize chart
   useEffect(() => {
+    // Skip if container ref is not available
     if (!chartContainerRef.current) return;
 
-    const chart = (createChart as any)(chartContainerRef.current, {
+    // Skip if we already have a chart instance
+    if (chartRef.current) return;
+
+    // Create the chart instance
+    const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: 'solid', color: 'transparent' },
         textColor: theme === 'dark' ? '#D9D9D9' : '#191919',
@@ -75,34 +80,46 @@ export function ModernChart({
       },
     });
 
-    // Create candlestick series
-    const candleSeries = chart.addCandlestickSeries({
+    // Create candlestick series with error handling
+    let candleSeries: ISeriesApi<"Candlestick">;
+    try {
+      candleSeries = chart.addCandlestickSeries({
       upColor: '#26a69a',
       downColor: '#ef5350',
       borderVisible: false,
       wickUpColor: '#26a69a',
       wickDownColor: '#ef5350',
     });
+    } catch (error) {
+      console.error('Failed to create candlestick series:', error);
+      chart.remove();
+      return;
+    }
 
     // Create volume series if enabled
     let volumeSeries: ISeriesApi<"Histogram"> | null = null;
     if (showVolume) {
-      volumeSeries = chart.addHistogramSeries({
+      try {
+        volumeSeries = chart.addHistogramSeries({
         color: theme === 'dark' ? 'rgba(120, 120, 120, 0.5)' : 'rgba(120, 120, 120, 0.2)',
         priceFormat: { type: 'volume' },
         priceScaleId: '', // set as an overlay
       });
       
-      if (volumeSeries) {
-        const priceScale = (volumeSeries as any).priceScale();
-        if (priceScale) {
-          priceScale.applyOptions({
-            scaleMargins: {
-              top: 0.8, // highest point of the volume will be below 80% of the chart
-              bottom: 0,
-            },
-          });
+        if (volumeSeries) {
+          const priceScale = (volumeSeries as any).priceScale();
+          if (priceScale) {
+            priceScale.applyOptions({
+              scaleMargins: {
+                top: 0.8, // highest point of the volume will be below 80% of the chart
+                bottom: 0,
+              },
+            });
+          }
         }
+      } catch (error) {
+        console.error('Failed to create volume series:', error);
+        // Don't fail the whole chart if volume fails
       }
     }
 
@@ -110,6 +127,29 @@ export function ModernChart({
     chartRef.current = chart;
     candleSeriesRef.current = candleSeries;
     volumeSeriesRef.current = volumeSeries;
+
+    // Initial data set
+    if (data.length > 0) {
+      const formattedData = data.map(item => ({
+        time: (item.time / 1000) as UTCTimestamp,
+        open: item.open,
+        high: item.high,
+        low: item.low,
+        close: item.close,
+      }));
+      
+      candleSeries.setData(formattedData);
+      
+      if (showVolume && volumeSeries) {
+        const volumeData = data.map(item => ({
+          time: (item.time / 1000) as UTCTimestamp,
+          value: item.volume || 0,
+        }));
+        volumeSeries.setData(volumeData);
+      }
+      
+      chart.timeScale().fitContent();
+    }
 
     // Handle window resize
     const handleResize = () => {
@@ -138,29 +178,33 @@ export function ModernChart({
 
   // Update chart data when data changes
   useEffect(() => {
-    if (!candleSeriesRef.current) return;
+    if (!candleSeriesRef.current || !data.length) return;
     
-    const formattedData = data.map(item => ({
-      time: (item.time / 1000) as UTCTimestamp, // Convert to Unix timestamp (seconds)
-      open: item.open,
-      high: item.high,
-      low: item.low,
-      close: item.close,
-    }));
-
-    candleSeriesRef.current.setData(formattedData);
-
-    if (showVolume && volumeSeriesRef.current) {
-      const volumeData = data.map(item => ({
+    try {
+      const formattedData = data.map(item => ({
         time: (item.time / 1000) as UTCTimestamp, // Convert to Unix timestamp (seconds)
-        value: item.volume || 0,
+        open: item.open,
+        high: item.high,
+        low: item.low,
+        close: item.close,
       }));
-      volumeSeriesRef.current.setData(volumeData);
-    }
 
-    // Auto-scale the chart to fit the data
-    if (chartRef.current) {
-      chartRef.current.timeScale().fitContent();
+      candleSeriesRef.current.setData(formattedData);
+
+      if (showVolume && volumeSeriesRef.current) {
+        const volumeData = data.map(item => ({
+          time: (item.time / 1000) as UTCTimestamp, // Convert to Unix timestamp (seconds)
+          value: item.volume || 0,
+        }));
+        volumeSeriesRef.current.setData(volumeData);
+      }
+
+      // Auto-scale the chart to fit the data
+      if (chartRef.current) {
+        chartRef.current.timeScale().fitContent();
+      }
+    } catch (error) {
+      console.error('Error updating chart data:', error);
     }
   }, [data, showVolume]);
 

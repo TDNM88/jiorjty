@@ -11,6 +11,24 @@
     "send": "Send",
     "typeMessage": "Type a message..."
   },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "enter_username": "Enter your username",
+    "enter_password": "Enter your password",
+    "demo_account": "Demo Account",
+    "login": "Login",
+    "signup": "Sign Up",
+    "forgot_password": "Forgot Password?"
+  },
+  "market": {
+    "search_markets": "Search markets...",
+    "price": "Price",
+    "change_24h": "24h Change",
+    "volume": "Volume",
+    "market_cap": "Market Cap",
+    "action": "Action"
+  },
   "chart": {
     "volume": "Volume"
   },
